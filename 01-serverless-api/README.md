@@ -1,7 +1,5 @@
 # 01 – Serverless API (API Gateway + Lambda + DynamoDB)
 
-## Architecture Diagram
-<img width="1536" height="1024" alt="diagram" src="https://github.com/user-attachments/assets/0a2625e9-7cd2-4ff6-947f-7925f73e5907" />
 
 
 ## Overview
@@ -10,6 +8,9 @@ optimized for zero idle cost and automatic scaling.
 
 ## Architecture
 Client → API Gateway → Lambda → DynamoDB
+
+## Architecture Diagram
+<img width="1536" height="1024" alt="diagram" src="https://github.com/user-attachments/assets/0a2625e9-7cd2-4ff6-947f-7925f73e5907" />
 
 ## Why this design
 - Serverless eliminates server management and scales automatically.
