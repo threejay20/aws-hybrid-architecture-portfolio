@@ -37,3 +37,17 @@ All resources are deleted after validation to ensure $0 spend.
 ## Key Decisions
 - [ADR-001: Lambda vs EC2](../decision-records/adr-001-lambda-vs-ec2.md)
 - [ADR-002: DynamoDB vs RDS](../decision-records/adr-002-dynamodb-vs-rds.md)
+
+## API Validation
+Example successful POST and GET requests:
+
+![API Test](api-test.png)
+
+## Monitoring
+Lambda logs are published automatically to CloudWatch Logs.
+
+![CloudWatch Logs](cloudwatch-logs.png)
+
+## Architecture Diagram
+![Serverless API Architecture](diagram.png)
+
