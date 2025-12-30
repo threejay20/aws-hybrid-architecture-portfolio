@@ -48,6 +48,3 @@ Lambda logs are published automatically to CloudWatch Logs.
 
 ![CloudWatch Logs](cloudwatch.png)
 
-## Architecture Diagram
-![Serverless API Architecture](diagram.png)
-
