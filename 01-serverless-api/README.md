@@ -41,12 +41,12 @@ All resources are deleted after validation to ensure $0 spend.
 ## API Validation
 Example successful POST and GET requests:
 
-![API Test](api-test.png)
+![API Test](Post_get.png)
 
 ## Monitoring
 Lambda logs are published automatically to CloudWatch Logs.
 
-![CloudWatch Logs](cloudwatch-logs.png)
+![CloudWatch Logs](cloudwatch.png)
 
 ## Architecture Diagram
 ![Serverless API Architecture](diagram.png)
