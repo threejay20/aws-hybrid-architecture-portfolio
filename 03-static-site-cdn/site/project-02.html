@@ -1,1 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project 02 — Event-Driven Architecture</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Project 02 — Event-Driven Architecture</h1>
+          <div class="sub">SNS • SQS • Lambda • DLQ</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="project-01.html">Project 01</a>
+        <a class="active" href="project-02.html">Project 02</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h2>Why this architecture?</h2>
+      <p>
+        The goal was to decouple producers and consumers and handle failures safely.
+        SNS provides fanout, SQS provides buffering and retries, Lambda processes messages,
+        and a DLQ isolates poison-pill messages.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card half">
+        <h3>Architecture</h3>
+        <p><strong>Producer → SNS → SQS → Lambda</strong> (with DLQ for failures)</p>
+        <div class="kv">
+          <div class="key">Decoupling</div><div class="val">Producer is isolated from consumer speed/failures</div>
+          <div class="key">Reliability</div><div class="val">Retries + DLQ prevent message loss</div>
+          <div class="key">Scaling model</div><div class="val">Lambda scales with queue depth</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h3>Exam triggers</h3>
+        <p>High-frequency SAA topics reinforced by this build.</p>
+        <div class="kv">
+          <div class="key">Fanout</div><div class="val">SNS topic → multiple subscribers</div>
+          <div class="key">Buffering</div><div class="val">SQS absorbs spikes and decouples</div>
+          <div class="key">Failure isolation</div><div class="val">DLQ captures poison-pill messages</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Failure handling (DLQ)</h3>
+        <p>
+          Messages are retried automatically. If processing keeps failing and the message exceeds the
+          max receive count, SQS moves it to the DLQ for inspection and reprocessing.
+        </p>
+
+        <div class="code">
+Key concepts:
+- Visibility timeout
+- At-least-once delivery (duplicates possible)
+- maxReceiveCount → DLQ routing
+        </div>
+
+        <div class="section-title">Troubleshooting workflow</div>
+        <div class="kv">
+          <div class="key">If errors spike</div><div class="val">Check CloudWatch Logs for Lambda failures</div>
+          <div class="key">If queue backs up</div><div class="val">Check Lambda concurrency + message age</div>
+          <div class="key">If DLQ grows</div><div class="val">Inspect message body; fix code/data; redrive</div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      Tip: If the exam mentions “poison pill” or “don’t lose messages,” think SQS retries + DLQ.
+    </footer>
+  </div>
+</body>
+</html>
 
