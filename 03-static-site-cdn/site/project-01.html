@@ -1,1 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project 01 — Serverless API</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Project 01 — Serverless API</h1>
+          <div class="sub">API Gateway (HTTP API) • Lambda • DynamoDB</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a class="active" href="project-01.html">Project 01</a>
+        <a href="project-02.html">Project 02</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h2>Why this architecture?</h2>
+      <p>
+        The goal was a REST API with minimal operations overhead and near-zero idle cost.
+        Lambda provides event-driven compute, DynamoDB provides managed persistence, and API Gateway
+        exposes a clean HTTP interface.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card half">
+        <h3>Architecture</h3>
+        <p><strong>Client → API Gateway → Lambda → DynamoDB</strong></p>
+        <div class="kv">
+          <div class="key">Scaling model</div><div class="val">Automatic scaling with request volume</div>
+          <div class="key">Cost model</div><div class="val">Pay-per-request, $0 idle cost</div>
+          <div class="key">Persistence</div><div class="val">Key-value access via taskId</div>
+        </div>
+      </section>
+
+      <section class="card half">
+        <h3>Exam triggers</h3>
+        <p>These are common SAA question patterns this project prepares you for.</p>
+        <div class="kv">
+          <div class="key">Serverless REST API</div><div class="val">API Gateway + Lambda</div>
+          <div class="key">NoSQL choice</div><div class="val">DynamoDB for simple access patterns</div>
+          <div class="key">Least privilege</div><div class="val">Lambda execution role scoped to table</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Routes (example)</h3>
+        <p>Typical REST routes implemented for a simple task resource.</p>
+        <div class="code">
+GET    /tasks
+POST   /tasks
+GET    /tasks/{id}
+PUT    /tasks/{id}
+DELETE /tasks/{id}
+        </div>
+
+        <div class="section-title">Operational visibility</div>
+        <p>Lambda writes invocation logs to CloudWatch Logs. Errors and latency can be viewed via Lambda metrics.</p>
+
+        <div class="section-title">Key trade-offs</div>
+        <div class="kv">
+          <div class="key">Pros</div><div class="val">No servers, automatic scaling, low cost</div>
+          <div class="key">Cons</div><div class="val">Cold starts, stateless constraints, service limits</div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      Tip: In interviews, explain the trade-off (Lambda vs EC2, DynamoDB vs RDS) before the implementation details.
+    </footer>
+  </div>
+</body>
+</html>
 
