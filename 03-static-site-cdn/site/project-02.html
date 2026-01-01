@@ -13,7 +13,7 @@
         <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>Project 02 — Event-Driven Architecture</h1>
-          <div class="sub">SNS • SQS • Lambda • DLQ</div>
+          <div class="sub">SNS • SQS • Lambda • Dead Letter Queue</div>
         </div>
       </div>
       <nav class="nav">
@@ -24,11 +24,12 @@
     </header>
 
     <section class="hero">
-      <h2>Why this architecture?</h2>
+      <h2>Architecture rationale</h2>
       <p>
-        The goal was to decouple producers and consumers and handle failures safely.
-        SNS provides fanout, SQS provides buffering and retries, Lambda processes messages,
-        and a DLQ isolates poison-pill messages.
+        This system uses asynchronous messaging to decouple producers from consumers
+        and to handle failure without data loss. Events are published to an SNS topic,
+        buffered by SQS, and processed by Lambda. Repeated failures are routed to a
+        Dead Letter Queue for inspection and recovery.
       </p>
     </section>
 
@@ -37,48 +38,67 @@
         <h3>Architecture</h3>
         <p><strong>Producer → SNS → SQS → Lambda</strong> (with DLQ for failures)</p>
         <div class="kv">
-          <div class="key">Decoupling</div><div class="val">Producer is isolated from consumer speed/failures</div>
-          <div class="key">Reliability</div><div class="val">Retries + DLQ prevent message loss</div>
-          <div class="key">Scaling model</div><div class="val">Lambda scales with queue depth</div>
+          <div class="key">Decoupling</div>
+          <div class="val">Producers are isolated from consumer throughput and failure modes</div>
+
+          <div class="key">Reliability</div>
+          <div class="val">Messages are retried automatically and preserved on repeated failure</div>
+
+          <div class="key">Scaling model</div>
+          <div class="val">Lambda concurrency scales based on queue depth</div>
         </div>
       </section>
 
       <section class="card half">
-        <h3>Exam triggers</h3>
-        <p>High-frequency SAA topics reinforced by this build.</p>
+        <h3>Design considerations</h3>
+        <p>
+          The architecture prioritizes durability and operational simplicity over strict ordering.
+          At-least-once delivery is acceptable, and duplicate processing is handled at the consumer.
+        </p>
         <div class="kv">
-          <div class="key">Fanout</div><div class="val">SNS topic → multiple subscribers</div>
-          <div class="key">Buffering</div><div class="val">SQS absorbs spikes and decouples</div>
-          <div class="key">Failure isolation</div><div class="val">DLQ captures poison-pill messages</div>
+          <div class="key">Fanout</div>
+          <div class="val">SNS enables multiple independent consumers per event</div>
+
+          <div class="key">Buffering</div>
+          <div class="val">SQS absorbs traffic spikes and protects downstream services</div>
+
+          <div class="key">Failure isolation</div>
+          <div class="val">Poison-pill messages are isolated via a DLQ</div>
         </div>
       </section>
 
       <section class="card">
-        <h3>Failure handling (DLQ)</h3>
+        <h3>Failure handling</h3>
         <p>
-          Messages are retried automatically. If processing keeps failing and the message exceeds the
-          max receive count, SQS moves it to the DLQ for inspection and reprocessing.
+          Message processing failures result in the message being returned to the queue
+          after the visibility timeout. After exceeding the configured receive count,
+          the message is moved to the Dead Letter Queue.
         </p>
 
         <div class="code">
-Key concepts:
-- Visibility timeout
-- At-least-once delivery (duplicates possible)
-- maxReceiveCount → DLQ routing
+Failure behavior:
+- At-least-once delivery semantics
+- Visibility timeout controls retry timing
+- maxReceiveCount determines DLQ routing
         </div>
 
-        <div class="section-title">Troubleshooting workflow</div>
+        <div class="section-title">Operational workflow</div>
         <div class="kv">
-          <div class="key">If errors spike</div><div class="val">Check CloudWatch Logs for Lambda failures</div>
-          <div class="key">If queue backs up</div><div class="val">Check Lambda concurrency + message age</div>
-          <div class="key">If DLQ grows</div><div class="val">Inspect message body; fix code/data; redrive</div>
+          <div class="key">Processing errors</div>
+          <div class="val">Investigated via CloudWatch Logs</div>
+
+          <div class="key">Queue backlog</div>
+          <div class="val">Evaluated using message age and Lambda concurrency</div>
+
+          <div class="key">DLQ growth</div>
+          <div class="val">Messages inspected, corrected, and optionally redriven</div>
         </div>
       </section>
     </div>
-<footer class="footer">
-  Failure is expected. Retries and DLQ routing are intentional to isolate poison-pill messages and preserve durability.
-</footer>
 
+    <footer class="footer">
+      Failure is an expected condition. Retries and DLQ routing are deliberate design choices to preserve durability and system stability.
+    </footer>
   </div>
 </body>
 </html>
