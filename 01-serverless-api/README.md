@@ -16,7 +16,7 @@ Client → API Gateway → Lambda → DynamoDB
 API Gateway serves as the public entry point.  
 Lambda functions process requests and interact with DynamoDB for data persistence.
 
-![Architecture Diagram](../assets/project-01-serverless-api/01-architecture.png)
+![Architecture Diagram](../assets/project-01-serverless-api/diagram.png)
 
 ---
 
