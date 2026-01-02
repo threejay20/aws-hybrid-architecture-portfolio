@@ -17,60 +17,40 @@ Client → CloudFront → Private S3 (Origin Access Control)
 CloudFront serves as the only public entry point.  
 The S3 bucket is fully private and can only be accessed by CloudFront using a service-to-service trust relationship.
 
----
-
-## Key Design Decisions
-
-### CloudFront as the entry layer
-- Terminates HTTPS at the edge
-- Caches content globally to reduce latency
-- Absorbs traffic spikes without scaling concerns
-- Provides a single control plane for delivery and security
-
-### Private S3 origin
-- Prevents direct object access
-- Eliminates accidental public exposure
-- Forces all access through CloudFront
-
-### Origin Access Control (OAC)
-- Uses IAM-based authorization
-- Replaces legacy Origin Access Identity (OAI)
-- Restricts S3 access to a specific CloudFront distribution ARN
+![CloudFront Distribution Overview](assets/project-03-static-cdn/01-cloudfront-distribution.png)
 
 ---
 
-## Security Configuration
+## Origin Protection
 
-- S3 Block Public Access: Enabled
-- Bucket policy allows `s3:GetObject` only from CloudFront
-- HTTPS enforced at the CloudFront edge
-- No direct S3 website hosting
-- No public ACLs or bucket policies
+The S3 bucket is not publicly accessible.  
+Access is granted exclusively to the CloudFront distribution via Origin Access Control.
 
-The origin cannot be accessed directly, even if object URLs are known.
+![CloudFront Origin with OAC](assets/project-03-static-cdn/02-cloudfront-origins-oac.png)
+
+![S3 Bucket Permissions (Private)](assets/project-03-static-cdn/03-s3-bucket-private.png)
+
+This configuration ensures all requests must pass through CloudFront and prevents direct object access.
 
 ---
 
-## Caching Behavior
+## Caching and Delivery
 
-- Default cache behavior optimized for static assets
-- Compression enabled (Brotli and Gzip)
-- Objects cached at edge locations to reduce origin fetches
-- Cache invalidation supported for controlled updates
+CloudFront caches static assets at edge locations to reduce latency and minimize origin load.  
+Compression is enabled to reduce transfer size and improve performance.
 
 ---
 
 ## Operational Validation
 
-The deployment was validated by:
-- Accessing content via the CloudFront domain
-- Inspecting response headers confirming edge delivery
-- Verifying S3 objects are inaccessible directly
-- Confirming bucket access is restricted to CloudFront only
+Live traffic was validated using browser developer tools:
 
-Supporting screenshots are stored under:
+- Requests are served from a `cloudfront.net` domain
+- Response headers confirm edge delivery
+- Origin server is reported as Amazon S3
+- Direct S3 access is denied
 
-assets/project-03-static-cdn/
+![CloudFront Live Request Headers](assets/project-03-static-cdn/04-cloudfront-live-request.png)
 
 ---
 
@@ -87,15 +67,15 @@ Costs scale only with usage.
 
 ## Trade-offs
 
-Pros:
+**Pros**
 - Global performance
 - Strong origin security
 - Minimal operational complexity
 - Clear separation of concerns
 
-Cons:
+**Cons**
 - Cache invalidation introduces propagation delay
-- Not suitable for dynamic or user-specific content
+- Not suitable for dynamic or personalized content
 - Advanced protections require paid tiers
 
 ---
@@ -108,6 +88,29 @@ Cons:
 - Read-heavy content with minimal updates
 
 ---
+
+## Future Improvements
+
+Several enhancements were intentionally left out to keep the architecture simple, cost-efficient, and focused. These would be appropriate additions as requirements evolve:
+
+- **Custom domain and TLS certificate**  
+  Attach an ACM certificate and Route 53 record to serve the site under a custom domain while maintaining HTTPS enforcement at the edge.
+
+- **Access logging and request analytics**  
+  Enable CloudFront access logs or integrate with centralized logging to analyze traffic patterns and cache efficiency.
+
+- **Web Application Firewall (WAF)**  
+  Add AWS WAF for request inspection, rate limiting, or geo-based controls if the site begins accepting user input or higher traffic volumes.
+
+- **Cache strategy refinement**  
+  Introduce versioned static assets or fine-grained cache behaviors to reduce invalidation frequency during updates.
+
+- **Multi-environment separation**  
+  Split content into separate buckets and distributions (e.g., staging and production) for safer iteration and controlled releases.
+
+These enhancements build naturally on the existing design without changing the core delivery or security model.
+
+--
 
 ## Status
 
