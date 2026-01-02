@@ -43,9 +43,9 @@ Messages that repeatedly fail processing are routed to a Dead Letter Queue.
 Messages that fail processing are retried automatically.
 After exceeding the configured receive count, messages are moved to a Dead Letter Queue for inspection and remediation.
 
-![SNS to SQS Subscription](assets/project-02-event-driven/02-sns-to-sqs.png)
+![SNS to SQS Subscription](assets/project-02-event-driven/sns-to-sqs.png)
 
-![Dead Letter Queue Configuration](assets/project-02-event-driven/03-sqs-dlq.png)
+![Dead Letter Queue Configuration](assets/project-02-event-driven/sqs-dlq.png)
 
 ---
 
@@ -55,7 +55,7 @@ After exceeding the configured receive count, messages are moved to a Dead Lette
 - No polling infrastructure required
 - Processing rate adapts to workload automatically
 
-![Lambda SQS Trigger](assets/project-02-event-driven/04-lambda-trigger.png)
+![Lambda SQS Trigger](assets/project-02-event-driven/lambda-trigger.png)
 
 ---
 
