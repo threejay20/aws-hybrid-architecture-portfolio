@@ -3,9 +3,7 @@
 ## Overview
 
 This project implements a stateless HTTP API using fully managed AWS services.
-
-The service exposes a small REST interface while avoiding server management,
-capacity planning, and idle infrastructure.
+The design avoids server management, capacity planning, and idle infrastructure.
 
 ---
 
@@ -13,36 +11,34 @@ capacity planning, and idle infrastructure.
 
 Client → API Gateway → Lambda → DynamoDB
 
-API Gateway is the public ingress.
-Lambda handles request processing.
-DynamoDB provides persistence.
+API Gateway acts as the public entry point.  
+Lambda functions process requests and persist data in DynamoDB.
 
-![Architecture Diagram](../assets/project-01-serverless-api/diagram.png)
+![Architecture Diagram](../../assets/project-01-serverless-api/diagram.png)
 
 ---
 
 ## API Surface
 
-The API exposes a minimal REST interface for task resources.
+The API exposes a minimal REST interface for task management.
 
-Endpoints:
 - GET /tasks
 - POST /tasks
 - GET /tasks/{id}
 - PUT /tasks/{id}
 - DELETE /tasks/{id}
 
-![API Gateway Routes](../assets/project-01-serverless-api/api-gateway-routes.png)
+![API Gateway Routes](../../assets/project-01-serverless-api/api-gateway-routes.png)
 
 ---
 
-## Security Configuration
+## Security
 
-- IAM execution role scoped to required DynamoDB actions only
+- IAM execution role scoped to required DynamoDB actions
 - No public access to DynamoDB
 - API Gateway is the only ingress point
 
-![DynamoDB Table](../assets/project-01-serverless-api/tabledetails.png.png)
+![DynamoDB Table Configuration](../../assets/project-01-serverless-api/tabledetails.png.png)
 
 ---
 
@@ -50,10 +46,10 @@ Endpoints:
 
 Lambda emits logs and metrics automatically.
 
-- Invocation logs available in CloudWatch Logs
-- Error rates and latency visible via Lambda metrics
+- Invocation logs in CloudWatch Logs
+- Error rates and latency via Lambda metrics
 
-![CloudWatch Logs](../assets/project-01-serverless-api/cloudwatch.png)
+![CloudWatch Logs](../../assets/project-01-serverless-api/cloudwatch.png)
 
 ---
 
@@ -61,29 +57,12 @@ Lambda emits logs and metrics automatically.
 
 - No idle compute
 - Pay-per-request execution
-- Managed services reduce operational overhead
-
----
-
-## Trade-offs
-
-Pros:
-- No server management
-- Automatic scaling
-- Predictable cost model
-
-Cons:
-- Cold start latency
-- Stateless execution model
-- Service limits must be managed
+- Fully managed services reduce operational overhead
 
 ---
 
 ## Status
 
-Deployed and validated.
-
-Requests flow end-to-end through API Gateway,
-Lambda executes correctly,
-and DynamoDB persists data as expected.
+Deployed and validated.  
+Requests flow end-to-end through API Gateway, Lambda, and DynamoDB.
 
