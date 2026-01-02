@@ -16,7 +16,7 @@ Producer → SNS → SQS → Lambda (with Dead Letter Queue)
 SNS provides event fanout, SQS buffers messages, and Lambda processes events asynchronously.
 Messages that repeatedly fail processing are routed to a Dead Letter Queue.
 
-![Architecture Diagram](assets/project-02-event-driven/01-diagram.png)
+![Architecture Diagram](assets/project-02-event-driven/diagram.png)
 
 ---
 
