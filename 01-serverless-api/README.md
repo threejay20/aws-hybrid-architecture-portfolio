@@ -1,50 +1,48 @@
-# 01 – Serverless API (API Gateway + Lambda + DynamoDB)
-
-
+# Project 01 — Serverless API
 
 ## Overview
-This project demonstrates a fully serverless REST API built on AWS,
-optimized for zero idle cost and automatic scaling.
+
+This project implements a stateless HTTP API using fully managed AWS services.
+The system is designed to minimize operational overhead while maintaining predictable scaling, clear security boundaries, and simple persistence.
+
+The architecture favors serverless components to eliminate idle infrastructure and reduce operational complexity.
+
+---
 
 ## Architecture
+
 Client → API Gateway → Lambda → DynamoDB
 
-## Architecture Diagram
-<img width="1536" height="1024" alt="diagram" src="https://github.com/user-attachments/assets/0a2625e9-7cd2-4ff6-947f-7925f73e5907" />
+API Gateway serves as the public entry point.  
+Lambda functions process requests and interact with DynamoDB for data persistence.
 
-## Why this design
-- Serverless eliminates server management and scales automatically.
-- DynamoDB avoids capacity planning and idle database costs.
-- HTTP API keeps the solution simple and cost-efficient.
+![Architecture Diagram](../assets/project-01-serverless-api/01-architecture.png)
 
-## Security considerations
-- Lambda execution role uses least-privilege IAM policies.
-- No hardcoded credentials.
-- TLS enforced by API Gateway.
+---
 
-## Cost considerations
-- Designed to remain within AWS Free Tier.
-- No long-running compute resources.
-- Resources are torn down after validation.
+## Key Design Decisions
 
-## Operations
-- CloudWatch used for logs and basic metrics.
-- Errors and latency observable via Lambda metrics.
+### Serverless compute
+- No server management or capacity planning
+- Automatic scaling based on request volume
+- Cost incurred only when requests are processed
 
-## Teardown
-All resources are deleted after validation to ensure $0 spend.
+### API Gateway (HTTP API)
+- Lightweight request routing
+- Native integration with Lambda
+- Built-in metrics and logging
 
-## Key Decisions
-- [ADR-001: Lambda vs EC2](../decision-records/adr-001-lambda-vs-ec2.md)
-- [ADR-002: DynamoDB vs RDS](../decision-records/adr-002-dynamodb-vs-rds.md)
+### DynamoDB for persistence
+- Key-value data model aligned with access patterns
+- Predictable performance at scale
+- No schema or capacity management
 
-## API Validation
-Example successful POST and GET requests:
+---
 
-![API Test](Post_get.png)
+## API Surface
 
-## Monitoring
-Lambda logs are published automatically to CloudWatch Logs.
+The API exposes a minimal REST interface for managing task resources.
+
 
 ![CloudWatch Logs](cloudwatch.png)
 
