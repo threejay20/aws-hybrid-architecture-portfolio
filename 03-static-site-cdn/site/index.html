@@ -13,7 +13,7 @@
         <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>AWS Hybrid Portfolio</h1>
-          <div class="sub">Architecture Notes • Solutions Architect + DevOps Track</div>
+          <div class="sub">Architecture Notes • AWS Serverless and Event-Driven Systems</div>
         </div>
       </div>
       <nav class="nav">
@@ -26,16 +26,16 @@
     <section class="hero">
       <h2>Architecture Notes (SAA-focused, DevOps-ready)</h2>
       <p>
-        This site is a lightweight documentation hub for hands-on AWS projects.
-        Each project highlights the “why” behind design choices: security, reliability, cost,
-        and operational trade-offs — aligned to AWS Solutions Architect Associate exam patterns.
+        This site documents a set of AWS systems built using managed services.
+        Each project records architectural decisions, constraints, and operational behavior
+        with an emphasis on reliability, security boundaries, and cost control.
       </p>
     </section>
 
     <div class="grid">
       <article class="card half">
         <h3>Project 01 — Serverless API</h3>
-        <p>HTTP API + Lambda + DynamoDB. Designed for zero-idle cost, least privilege IAM, and clear operational visibility.</p>
+        <p>A stateless HTTP API backed by managed compute and persistence.The system favors minimal operational overhead, predictable scaling, and strict least-privilege access.</p>
         <div class="meta">
           <span class="badge"><span class="dot ok"></span> Serverless</span>
           <span class="badge"><span class="dot"></span> IAM</span>
@@ -43,9 +43,9 @@
           <span class="badge"><span class="dot"></span> CloudWatch</span>
         </div>
         <div class="kv">
-          <div class="key">Core pattern</div><div class="val">Stateless REST API with managed persistence</div>
-          <div class="key">Exam focus</div><div class="val">Service selection, scaling model, permissions boundaries</div>
-          <div class="key">Proof</div><div class="val">Routes + logs + end-to-end requests</div>
+          <div class="key">System pattern</div><div class="val">Stateless REST API with managed persistence</div>
+          <div class="key">Design focus</div><div class="val">Service selection, scaling behavior, IAM boundaries</div>
+          <div class="key">Operational evidence</div><div class="val">Live routes, request logs, and DynamoDB writes</div>
         </div>
         <p style="margin-top:12px;">
           <a href="project-01.html">Open Project 01 notes →</a>
@@ -54,7 +54,7 @@
 
       <article class="card half">
         <h3>Project 02 — Event-Driven Architecture</h3>
-        <p>SNS → SQS → Lambda with DLQ. Demonstrates decoupling, retries, visibility timeout, and failure isolation.</p>
+        <p>An asynchronous workflow that decouples producers from consumers using managed messaging and serverless processing.Failures are isolated through retries and dead-letter queues.</p>
         <div class="meta">
           <span class="badge"><span class="dot ok"></span> Asynchronous</span>
           <span class="badge"><span class="dot"></span> SNS fanout</span>
@@ -62,9 +62,9 @@
           <span class="badge"><span class="dot warn"></span> DLQ</span>
         </div>
         <div class="kv">
-          <div class="key">Core pattern</div><div class="val">Fanout + buffer + serverless consumer</div>
-          <div class="key">Exam focus</div><div class="val">Retries, DLQ, decoupling, permission requirements</div>
-          <div class="key">Proof</div><div class="val">DLQ message with receive count > maxReceiveCount</div>
+          <div class="key">Core pattern</div><div class="val">Fanout with buffering and serverless consumer</div>
+          <div class="key">Exam focus</div><div class="val">Retries, visibility timeout behavior, failure isolation</div>
+          <div class="key">Proof</div><div class="val">Dead-letter queue entries after repeated processing failures</div>
         </div>
         <p style="margin-top:12px;">
           <a href="project-02.html">Open Project 02 notes →</a>
@@ -72,33 +72,17 @@
       </article>
 
       <section class="card">
-        <h3>How to read these notes</h3>
-        <p>Each project is documented with the same structure so it’s easy to review for interviews and exam prep.</p>
-
-        <div class="callout">
-          <strong>Rule of thumb:</strong> If you can explain the trade-offs (cost, security, failure handling),
-          you’re not memorizing AWS — you’re thinking like a Solutions Architect.
-        </div>
-
-        <div class="section-title">Exam-style mental triggers</div>
-        <div class="kv">
-          <div class="key">Need fanout?</div><div class="val">SNS (one event → multiple subscribers)</div>
-          <div class="key">Need buffering?</div><div class="val">SQS (spikes, decoupling, durability)</div>
-          <div class="key">Need $0 idle?</div><div class="val">Lambda + managed services</div>
-          <div class="key">Need failure isolation?</div><div class="val">DLQ (poison-pill protection)</div>
-          <div class="key">Need global latency reduction?</div><div class="val">CloudFront (edge caching)</div>
-        </div>
-
-        <div class="section-title">Next planned</div>
-        <div class="code">
-Project 03: Private S3 origin + CloudFront OAC (secure global delivery)
-Key focus: caching strategy, origin protection, HTTPS at the edge
-        </div>
-      </section>
+  <h3>Planned system</h3>
+  <div class="code">
+Static documentation site delivered via CloudFront
+Private S3 origin with origin access control (OAC)
+Focus: cache behavior, origin protection, HTTPS enforcement
+  </div>
+</section>
     </div>
 
   <footer class="footer">
-  Architecture notes for hands-on AWS builds. Focus: security, reliability, cost, and operational clarity.
+  Architecture notes written from an operator and system-owner perspective.
 </footer>
   </div>
 </body>
