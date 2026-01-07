@@ -1,1 +1,8 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Baseline infrastructure placeholders for Project 04 (OIDC-based CI/CD deployment).
+  This template documents intended infrastructure ownership and serves as a foundation
+  for future full infrastructure-as-code adoption.
+
+Resources: {}
 
