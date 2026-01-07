@@ -31,20 +31,21 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Sanity checks
-        shell: bash
         run: |
           set -euo pipefail
-          test -d site
-          test -f site/index.html
+          test -d 03-static-site-cdn/site
+          test -f 03-static-site-cdn/site/index.html
           echo "Site folder OK"
+
 
       - name: Sync site to S3 (private bucket)
         shell: bash
         run: |
           set -euo pipefail
-          aws s3 sync site "s3://${{ secrets.S3_BUCKET_NAME }}/site" \
+          aws s3 sync 03-static-site-cdn/site "s3://${{ secrets.S3_BUCKET_NAME }}/site" \
             --delete \
             --only-show-errors
+
 
       - name: Invalidate CloudFront cache (if distribution id secret exists)
         shell: bash
