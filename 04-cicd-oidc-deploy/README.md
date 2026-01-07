@@ -46,7 +46,7 @@ Security is enforced at multiple layers:
 - S3 bucket is private with **Block Public Access enabled**
 - CloudFront uses Origin Access Control (OAC) to access S3
 
-![OIDC Provider](../assets/project-04-cicd-oidc/02-iam-role-oidc-trust)
+![OIDC Provider](../assets/project-04-cicd-oidc/02-iam-role-oidc-trust.png)
 
 ![S3 Block Public Access](../assets/project-04-cicd-oidc/03-s3-block-public-access.png)
 
