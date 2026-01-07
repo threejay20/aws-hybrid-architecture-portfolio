@@ -18,7 +18,7 @@ GitHub Actions assumes an IAM role using OIDC.
 Static assets are uploaded to a private S3 bucket.  
 CloudFront serves content using Origin Access Control (OAC).
 
-![CloudFront Distribution](../assets/project-04-cicd-oidc/03-cloudfront-distribution.png)
+![CloudFront Distribution](../assets/project-04-cicd-oidc/04-cloudfront-distribution.png)
 
 ---
 
@@ -46,7 +46,7 @@ Security is enforced at multiple layers:
 - S3 bucket is private with **Block Public Access enabled**
 - CloudFront uses Origin Access Control (OAC) to access S3
 
-![OIDC Provider](../assets/project-04-cicd-oidc/02-aws-iam-oidc-provider.png)
+![OIDC Provider](../assets/project-04-cicd-oidc/02-iam-role-oidc-trust)
 
 ![S3 Block Public Access](../assets/project-04-cicd-oidc/03-s3-block-public-access.png)
 
