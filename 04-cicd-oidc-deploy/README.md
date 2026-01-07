@@ -1,141 +1,86 @@
-# Project 04 — CI/CD with GitHub Actions (OIDC to AWS)
+# Project 04 — CI/CD Deployment with GitHub Actions (OIDC)
 
 ## Overview
 
-This project implements a secure, credential-less CI/CD pipeline using GitHub Actions and AWS OIDC to deploy a static site to a private S3 bucket behind CloudFront.
+This project implements a secure CI/CD pipeline that deploys a static website to AWS using GitHub Actions with OpenID Connect (OIDC).
 
-The goal is to demonstrate a modern deployment model that avoids long-lived credentials, enforces least-privilege access, and supports automated, repeatable deployments triggered directly from version control.
+The pipeline authenticates to AWS without long-lived credentials, synchronizes site assets to a private S3 bucket, and serves content globally via CloudFront.
 
----
-
-## Architecture Summary
-
-GitHub Actions → AWS IAM (OIDC) → S3 (private) → CloudFront
-
-- GitHub Actions authenticates to AWS using OpenID Connect (OIDC)
-- No static AWS credentials are stored in GitHub
-- IAM role trust policy restricts who can assume the role
-- Deployment syncs site assets to a private S3 bucket
-- CloudFront serves content and handles cache invalidation
+This project focuses on secure automation, least-privilege access, and production-ready deployment patterns.
 
 ---
 
-## Authentication Model (OIDC)
+## Architecture
 
-Authentication is handled using GitHub’s OIDC provider (`token.actions.githubusercontent.com`).
+GitHub Actions → AWS OIDC → IAM Role → S3 (private) → CloudFront (OAC)
 
-Key characteristics:
+GitHub Actions assumes an IAM role using OIDC.  
+Static assets are uploaded to a private S3 bucket.  
+CloudFront serves content using Origin Access Control (OAC).
 
-- No access keys or secrets stored in GitHub
-- Short-lived credentials issued by AWS STS
-- Role assumption restricted to:
-  - This repository
-  - The `main` branch
-- Blast radius limited by IAM policy scope
-
-This removes the risk associated with leaked or over-privileged CI/CD credentials.
+![CloudFront Distribution](../assets/project-04-cicd-oidc/03-cloudfront-distribution.png)
 
 ---
 
-## Deployment Flow
+## CI/CD Workflow
 
-1. Code is pushed to the `main` branch
-2. GitHub Actions workflow starts automatically
-3. Workflow requests a short-lived AWS session via OIDC
-4. Sanity checks validate deployment artifacts
-5. Static site contents are synced to a private S3 bucket
-6. CloudFront cache is invalidated (if configured)
-7. Deployment completes with no manual intervention
+The deployment pipeline performs the following steps:
 
-All steps are idempotent and safe to re-run.
+- Checks out repository code
+- Assumes AWS IAM role using OIDC
+- Runs sanity checks on site contents
+- Syncs site files to a private S3 bucket
+- Invalidates CloudFront cache when configured
+
+![GitHub Actions Success](../assets/project-04-cicd-oidc/01-github-actions-success.png)
 
 ---
 
-## Security Posture
+## Security
 
-- S3 bucket:
-  - Block Public Access enabled
-  - Access allowed only via CloudFront Origin Access Control (OAC)
-- IAM role:
-  - Assumable only via GitHub OIDC
-  - Scoped to required S3 and CloudFront actions
-- GitHub:
-  - No stored AWS secrets
-  - Trust restricted to repository and branch
+Security is enforced at multiple layers:
 
-The deployment pipeline itself forms part of the security boundary.
+- No AWS access keys stored in GitHub
+- Authentication via OpenID Connect (OIDC)
+- IAM role scoped to required S3 and CloudFront actions only
+- S3 bucket is private with **Block Public Access enabled**
+- CloudFront uses Origin Access Control (OAC) to access S3
+
+![OIDC Provider](../assets/project-04-cicd-oidc/02-aws-iam-oidc-provider.png)
+
+![S3 Block Public Access](../assets/project-04-cicd-oidc/03-s3-block-public-access.png)
+
+---
+
+## Infrastructure Notes
+
+An `iac/` directory is included to demonstrate how this deployment could be fully provisioned using infrastructure-as-code.
+
+In this implementation, AWS resources were created manually to emphasize architecture clarity and security configuration.
 
 ---
 
 ## Operational Characteristics
 
-- Fully automated deployments
-- No manual credential rotation
-- Fast rollback via Git history
-- Deterministic behavior across runs
-- Minimal ongoing maintenance
-
-Failures surface immediately in GitHub Actions logs and do not impact previously deployed content.
+- Fully automated deployments on push
+- No manual AWS console interaction required
+- Fast rollback by redeploying previous commits
+- CloudFront invalidation handled automatically
 
 ---
 
-## Failure Modes and Handling
+## Cost Considerations
 
-- **Sanity check failure**  
-  Deployment stops before any AWS changes occur.
+- S3 static hosting costs are minimal
+- CloudFront uses AWS free tier where applicable
+- GitHub Actions uses included minutes
 
-- **S3 sync failure**  
-  No partial state is committed; previously deployed content remains live.
-
-- **CloudFront invalidation failure**  
-  Content still deploys; cache naturally expires.
-
-Each failure mode is isolated and observable.
-
----
-
-## Cost Profile
-
-- GitHub Actions: free tier sufficient
-- IAM / OIDC: no cost
-- S3 static hosting: negligible
-- CloudFront: free tier or minimal cost for low traffic
-
-This architecture is safe to leave running continuously.
-
----
-
-## Repository Structure
-
-04-cicd-oidc-deploy/
-├── README.md
-├── project-04-deploy.yml
-├── architecture.md
-├── operations.md
-├── security.md
-├── teardown.md
-├── iac/
-└── assets/project-04-cicd-oidc/
-
+No persistent compute resources are running.
 
 ---
 
 ## Status
 
-Deployed and validated.
-
-- OIDC authentication confirmed
-- GitHub Actions deployment succeeds
-- Private S3 + CloudFront serving content
-- No static credentials in use
-
----
-
-## Future Improvements
-
-- Add environment separation (dev / prod)
-- Introduce policy linting or IAM analysis
-- Add build artifact integrity checks
-- Expand to multi-account deployments
-- Integrate monitoring for deployment frequency and failure rate
+Deployment pipeline is active and verified.  
+Static site is successfully served via CloudFront using a private S3 origin.
 
