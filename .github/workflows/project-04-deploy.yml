@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "site/**"
+      - "03-static-site-cdn/site/**"
       - ".github/workflows/project-04-deploy.yml"
   workflow_dispatch: {}
 
