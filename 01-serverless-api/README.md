@@ -13,7 +13,7 @@ Client → API Gateway → Lambda → DynamoDB
 API Gateway is the public entry point.  
 Lambda handles request processing and persists data in DynamoDB.
 
-![Architecture Diagram](../assets/project-01-serverless-api/diagram.png)
+![Architecture Diagram](../assets/%20%20project-01-serverless-api/diagram.png)
 
 ---
 
@@ -27,27 +27,27 @@ The API exposes a minimal REST interface for managing task resources.
 - PUT `/tasks/{id}`
 - DELETE `/tasks/{id}`
 
-![API Gateway Routes](../assets/project-01-serverless-api/api-gateway-routes.png)
+![API Gateway Routes](../assets/%20%20project-01-serverless-api/api-gateway-routes.png)
 
 ---
 
 ## Request Example
-![POST /tasks Example](../assets/project-01-serverless-api/Post_get.png)
+![POST /tasks Example](../assets/%20%20project-01-serverless-api/Post_get.png)
 
 ---
 
 ## Lambda Implementation
 Lambda uses environment variables and an IAM execution role scoped to only what the function needs.
 
-![Lambda Code](../assets/project-01-serverless-api/lamba_code.png.png)
-![Lambda Environment Variables](../assets/project-01-serverless-api/lambda_enviroment.png.png)
+![Lambda Code](../assets/%20%20project-01-serverless-api/lamba_code.png.png)
+![Lambda Environment Variables](../assets/%20%20project-01-serverless-api/lambda_enviroment.png.png)
 
 ---
 
 ## Data Layer
 DynamoDB stores tasks with simple key-based access patterns.
 
-![DynamoDB Table Details](../assets/project-01-serverless-api/tabledetails.png.png)
+![DynamoDB Table Details](../assets/%20%20project-01-serverless-api/tabledetails.png.png)
 
 ---
 
@@ -57,7 +57,7 @@ Lambda emits logs and metrics automatically.
 - Invocation logs available in CloudWatch Logs
 - Error rates and latency visible via Lambda metrics
 
-![CloudWatch Logs](../assets/project-01-serverless-api/cloudwatch.png)
+![CloudWatch Logs](../assets/%20%20project-01-serverless-api/cloudwatch.png)
 
 ---
 
