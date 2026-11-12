@@ -20,9 +20,3 @@ Failures → SQS Dead Letter Queue (DLQ)
 - SQS protects consumers from traffic spikes.
 - SQS enables retries and DLQ handling, which direct SNS → Lambda does not provide.
 - This design improves resilience and operational control.
-
-## Exam relevance (AWS SAA)
-- SNS = pub/sub and fanout
-- SQS = decoupling and buffering
-- Lambda = event-driven compute
-- DLQ = failure isolation
