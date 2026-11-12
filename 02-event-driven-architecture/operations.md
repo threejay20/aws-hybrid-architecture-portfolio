@@ -20,8 +20,3 @@ Key signals:
 - No servers to monitor
 - Managed retry behavior
 - Clear separation between healthy and failed messages
-
-## Exam relevance (AWS SAA)
-- CloudWatch is the default monitoring service
-- DLQs are inspected manually or via automation
-- Operational visibility is provided without additional infrastructure
