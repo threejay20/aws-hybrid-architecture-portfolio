@@ -20,7 +20,3 @@ All resources were deleted after validation to avoid unnecessary cost.
 - Prevents unintended cost
 - Demonstrates operational discipline
 - Reinforces infrastructure lifecycle awareness
-
-## Exam relevance (AWS SAA)
-- AWS resources incur cost when left running
-- Serverless does not mean “free forever”
