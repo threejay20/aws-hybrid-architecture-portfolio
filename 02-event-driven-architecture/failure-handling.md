@@ -27,8 +27,3 @@ An exception was intentionally raised in Lambda to validate:
 - Retry behavior
 - DLQ routing
 - Message durability
-
-## Exam relevance (AWS SAA)
-- “What happens to messages that fail processing?” → DLQ
-- “How do you prevent message loss?” → retries + DLQ
-- “How does SQS handle failures?” → visibility timeout + maxReceiveCount
